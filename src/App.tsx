@@ -76,55 +76,36 @@ export default function App() {
 
   return (
     <div className="flex w-[800px] h-[600px] bg-neutral-950 text-neutral-200 overflow-hidden">
-      {/* Sidebar - Fixed width for popup context */}
-      <nav className="w-56 border-r border-neutral-800 flex flex-col py-6 px-5 shrink-0 bg-neutral-900/50 backdrop-blur-md">
-        <div className="flex items-center gap-3 mb-8 px-1">
-          <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/20">
+      {/* Sidebar - Compact for popup optimization */}
+      <nav className="w-16 border-r border-neutral-800 flex flex-col py-6 px-0 items-center shrink-0 bg-neutral-900/50 backdrop-blur-md">
+        <div className="mb-8">
+          <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/20">
             <Zap className="w-5 h-5 text-white" />
           </div>
-          <span className="font-bold text-lg tracking-tight text-white">VEO Automation</span>
         </div>
 
-        <div className="flex flex-col gap-2 w-full">
-          <NavButton 
+        <div className="flex flex-col gap-3 w-full px-2">
+          <NavIconButton 
             active={activeTab === 'control'} 
             onClick={() => setActiveTab('control')} 
             icon={<Play className="w-5 h-5" />} 
-            label="Control" 
           />
-          <NavButton 
+          <NavIconButton 
             active={activeTab === 'queue'} 
             onClick={() => setActiveTab('queue')} 
             icon={<List className="w-5 h-5" />} 
-            label="Prompt Queue" 
             badge={queue.length > 0 ? queue.length : undefined}
           />
-          <NavButton 
+          <NavIconButton 
             active={activeTab === 'settings'} 
             onClick={() => setActiveTab('settings')} 
             icon={<SettingsIcon className="w-5 h-5" />} 
-            label="Settings" 
           />
-        </div>
-
-        <div className="mt-auto pt-6 px-2">
-          <div className={cn(
-            "p-3 rounded-xl flex items-center gap-3 border transition-all",
-            isExtensionActive ? "bg-green-500/10 border-green-500/50" : "bg-neutral-800/50 border-neutral-700"
-          )}>
-            <div className={cn(
-              "w-2 h-2 rounded-full",
-              isExtensionActive ? "bg-green-500 animate-pulse" : "bg-neutral-600"
-            )} />
-            <span className="hidden md:block text-xs font-medium uppercase tracking-wider text-neutral-400">
-              {isExtensionActive ? "Automation Active" : "Automation Idle"}
-            </span>
-          </div>
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto relative">
+      <main className="flex-1 overflow-y-auto relative min-w-0">
         <AnimatePresence mode="wait">
           {activeTab === 'control' && <ControlTab key="control" mode={selectedMode} setMode={setSelectedMode} onAdd={addToQueue} queueCount={queue.length} />}
           {activeTab === 'queue' && (
@@ -142,6 +123,25 @@ export default function App() {
         </AnimatePresence>
       </main>
     </div>
+  );
+}
+
+function NavIconButton({ active, icon, onClick, badge }: { active: boolean, icon: React.ReactNode, onClick: () => void, badge?: number }) {
+  return (
+    <button 
+      onClick={onClick}
+      className={cn(
+        "flex items-center justify-center p-3 rounded-xl transition-all relative group",
+        active ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20" : "text-neutral-500 hover:bg-neutral-800 hover:text-neutral-300"
+      )}
+    >
+      {icon}
+      {badge !== undefined && (
+        <span className="absolute -top-1 -right-1 bg-indigo-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center border-2 border-neutral-950">
+          {badge}
+        </span>
+      )}
+    </button>
   );
 }
 
@@ -211,17 +211,17 @@ function ControlTab({ mode, setMode, onAdd, queueCount }: { mode: GenerationMode
         <p className="text-neutral-400 text-sm">Configure your batch generation tasks.</p>
       </header>
 
-      <div className="grid grid-cols-5 gap-6 flex-1 min-h-0 overflow-hidden">
-        <div className="col-span-1 flex flex-col gap-2">
-          <label className="text-xs font-black uppercase tracking-widest text-neutral-500 mb-1">Modes</label>
-          <ModeButton active={mode === GenerationMode.TEXT_TO_VIDEO} onClick={() => setMode(GenerationMode.TEXT_TO_VIDEO)} icon={<Video className="w-4 h-4" />} label="Text-to-Video" />
-          <ModeButton active={mode === GenerationMode.IMAGE_TO_VIDEO} onClick={() => setMode(GenerationMode.IMAGE_TO_VIDEO)} icon={<Layers className="w-4 h-4" />} label="Image-to-Video" />
-          <ModeButton active={mode === GenerationMode.COMPONENTS_TO_VIDEO} onClick={() => setMode(GenerationMode.COMPONENTS_TO_VIDEO)} icon={<Plus className="w-4 h-4" />} label="Comp-to-Video" />
-          <ModeButton active={mode === GenerationMode.TEXT_TO_IMAGE} onClick={() => setMode(GenerationMode.TEXT_TO_IMAGE)} icon={<ImageIcon className="w-4 h-4" />} label="Text-to-Image" />
-          <ModeButton active={mode === GenerationMode.IMAGE_TO_IMAGE} onClick={() => setMode(GenerationMode.IMAGE_TO_IMAGE)} icon={<Zap className="w-4 h-4" />} label="Image-to-Image" />
+      <div className="flex gap-8 flex-1 min-h-0 overflow-hidden">
+        <div className="w-[350px] flex flex-col gap-2.5 shrink-0 bg-neutral-900/30 p-3 rounded-2xl border border-neutral-800/50">
+          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500 mb-2 px-2">Generation Modes</label>
+          <ModeButton active={mode === GenerationMode.TEXT_TO_VIDEO} onClick={() => setMode(GenerationMode.TEXT_TO_VIDEO)} icon={<Video className="w-5 h-5" />} label="Text-to-Video" />
+          <ModeButton active={mode === GenerationMode.IMAGE_TO_VIDEO} onClick={() => setMode(GenerationMode.IMAGE_TO_VIDEO)} icon={<Layers className="w-5 h-5" />} label="Image-to-Video" />
+          <ModeButton active={mode === GenerationMode.COMPONENTS_TO_VIDEO} onClick={() => setMode(GenerationMode.COMPONENTS_TO_VIDEO)} icon={<Plus className="w-5 h-5" />} label="Comp-to-Video" />
+          <ModeButton active={mode === GenerationMode.TEXT_TO_IMAGE} onClick={() => setMode(GenerationMode.TEXT_TO_IMAGE)} icon={<ImageIcon className="w-5 h-5" />} label="Text-to-Image" />
+          <ModeButton active={mode === GenerationMode.IMAGE_TO_IMAGE} onClick={() => setMode(GenerationMode.IMAGE_TO_IMAGE)} icon={<Zap className="w-5 h-5" />} label="Image-to-Image" />
         </div>
 
-        <div className="col-span-4 flex flex-col gap-4 overflow-y-auto pr-2">
+        <div className="flex-1 flex flex-col gap-4 overflow-y-auto pr-2">
           <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-5">
             <div className="mb-4">
               <label className="block text-xs font-bold uppercase tracking-widest text-neutral-500 mb-2">Project Name</label>
@@ -451,12 +451,12 @@ function ModeButton({ active, label, icon, onClick }: { active: boolean, label: 
     <button 
       onClick={onClick}
       className={cn(
-        "flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left group",
+        "flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all text-left group",
         active ? "bg-indigo-600 text-white font-bold" : "text-neutral-500 hover:bg-neutral-800/50 hover:text-neutral-300"
       )}
     >
-      {icon}
-      <span className="text-xs">{label}</span>
+      <span className="shrink-0">{icon}</span>
+      <span className="text-sm whitespace-nowrap font-semibold">{label}</span>
     </button>
   );
 }
