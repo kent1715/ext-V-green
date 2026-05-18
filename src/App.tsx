@@ -75,14 +75,14 @@ export default function App() {
   };
 
   return (
-    <div className="flex w-full min-h-screen bg-neutral-950 text-neutral-200">
-      {/* Sidebar */}
-      <nav className="w-20 md:w-72 border-r border-neutral-800 flex flex-col items-center md:items-stretch py-8 px-6 shrink-0 bg-neutral-900/50 backdrop-blur-md">
-        <div className="flex items-center gap-4 mb-12 px-2">
-          <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/20">
-            <Zap className="w-6 h-6 text-white" />
+    <div className="flex w-[800px] h-[600px] bg-neutral-950 text-neutral-200 overflow-hidden">
+      {/* Sidebar - Fixed width for popup context */}
+      <nav className="w-56 border-r border-neutral-800 flex flex-col py-6 px-5 shrink-0 bg-neutral-900/50 backdrop-blur-md">
+        <div className="flex items-center gap-3 mb-8 px-1">
+          <div className="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/20">
+            <Zap className="w-5 h-5 text-white" />
           </div>
-          <span className="hidden md:block font-bold text-xl tracking-tight text-white">VEO Automation</span>
+          <span className="font-bold text-lg tracking-tight text-white">VEO Automation</span>
         </div>
 
         <div className="flex flex-col gap-2 w-full">
@@ -150,14 +150,14 @@ function NavButton({ active, label, icon, onClick, badge }: { active: boolean, l
     <button 
       onClick={onClick}
       className={cn(
-        "flex items-center gap-4 px-4 py-4 rounded-2xl transition-all w-full group",
+        "flex items-center gap-3 px-3 py-3 rounded-xl transition-all w-full group",
         active ? "bg-indigo-600/10 text-indigo-400 border border-indigo-600/20" : "text-neutral-400 hover:bg-neutral-800/50 border border-transparent"
       )}
     >
       <span className={cn("transition-colors", active ? "text-indigo-400" : "group-hover:text-neutral-200")}>{icon}</span>
-      <span className="hidden md:block font-semibold text-base">{label}</span>
+      <span className="font-bold text-sm">{label}</span>
       {badge !== undefined && (
-        <span className="ml-auto bg-indigo-600 text-white text-xs font-bold px-2 py-0.5 rounded-full min-w-[24px] text-center">
+        <span className="ml-auto bg-indigo-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">
           {badge}
         </span>
       )}
@@ -201,86 +201,77 @@ function ControlTab({ mode, setMode, onAdd, queueCount }: { mode: GenerationMode
 
   return (
     <motion.div 
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      className="p-10 max-w-5xl mx-auto"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      className="p-6 h-full flex flex-col"
     >
-      <header className="mb-12">
-        <h1 className="text-4xl font-bold text-white mb-3 tracking-tight leading-tight">Generation Control</h1>
-        <p className="text-neutral-400 text-lg">Configure your batch generation tasks and add them to the queue.</p>
+      <header className="mb-6">
+        <h1 className="text-2xl font-bold text-white mb-1 tracking-tight">Generation Control</h1>
+        <p className="text-neutral-400 text-sm">Configure your batch generation tasks.</p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-12">
-        <div className="md:col-span-1 flex flex-col gap-3">
-          <label className="text-sm font-bold uppercase tracking-[0.2em] text-neutral-500 mb-2">Modes</label>
-          <ModeButton active={mode === GenerationMode.TEXT_TO_VIDEO} onClick={() => setMode(GenerationMode.TEXT_TO_VIDEO)} icon={<Video className="w-5 h-5" />} label="Text-to-Video" />
-          <ModeButton active={mode === GenerationMode.IMAGE_TO_VIDEO} onClick={() => setMode(GenerationMode.IMAGE_TO_VIDEO)} icon={<Layers className="w-5 h-5" />} label="Image-to-Video" />
-          <ModeButton active={mode === GenerationMode.COMPONENTS_TO_VIDEO} onClick={() => setMode(GenerationMode.COMPONENTS_TO_VIDEO)} icon={<Plus className="w-5 h-5" />} label="Comp-to-Video" />
-          <ModeButton active={mode === GenerationMode.TEXT_TO_IMAGE} onClick={() => setMode(GenerationMode.TEXT_TO_IMAGE)} icon={<ImageIcon className="w-5 h-5" />} label="Text-to-Image" />
-          <ModeButton active={mode === GenerationMode.IMAGE_TO_IMAGE} onClick={() => setMode(GenerationMode.IMAGE_TO_IMAGE)} icon={<Zap className="w-5 h-5" />} label="Image-to-Image" />
+      <div className="grid grid-cols-5 gap-6 flex-1 min-h-0 overflow-hidden">
+        <div className="col-span-1 flex flex-col gap-2">
+          <label className="text-xs font-black uppercase tracking-widest text-neutral-500 mb-1">Modes</label>
+          <ModeButton active={mode === GenerationMode.TEXT_TO_VIDEO} onClick={() => setMode(GenerationMode.TEXT_TO_VIDEO)} icon={<Video className="w-4 h-4" />} label="Text-to-Video" />
+          <ModeButton active={mode === GenerationMode.IMAGE_TO_VIDEO} onClick={() => setMode(GenerationMode.IMAGE_TO_VIDEO)} icon={<Layers className="w-4 h-4" />} label="Image-to-Video" />
+          <ModeButton active={mode === GenerationMode.COMPONENTS_TO_VIDEO} onClick={() => setMode(GenerationMode.COMPONENTS_TO_VIDEO)} icon={<Plus className="w-4 h-4" />} label="Comp-to-Video" />
+          <ModeButton active={mode === GenerationMode.TEXT_TO_IMAGE} onClick={() => setMode(GenerationMode.TEXT_TO_IMAGE)} icon={<ImageIcon className="w-4 h-4" />} label="Text-to-Image" />
+          <ModeButton active={mode === GenerationMode.IMAGE_TO_IMAGE} onClick={() => setMode(GenerationMode.IMAGE_TO_IMAGE)} icon={<Zap className="w-4 h-4" />} label="Image-to-Image" />
         </div>
 
-        <div className="md:col-span-4 bg-neutral-900/50 border border-neutral-800 rounded-3xl p-8">
-          <div className="mb-8">
-            <label className="block text-sm font-bold uppercase tracking-widest text-neutral-500 mb-4">Project Name</label>
-            <input 
-              type="text" 
-              placeholder="e.g. Cinematic Landscapes"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
-              className="w-full bg-neutral-950 border border-neutral-800 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-indigo-600/50 transition-all text-base"
-            />
-          </div>
+        <div className="col-span-4 flex flex-col gap-4 overflow-y-auto pr-2">
+          <div className="bg-neutral-900/50 border border-neutral-800 rounded-2xl p-5">
+            <div className="mb-4">
+              <label className="block text-xs font-bold uppercase tracking-widest text-neutral-500 mb-2">Project Name</label>
+              <input 
+                type="text" 
+                placeholder="e.g. Cinema"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-600/50 transition-all text-sm"
+              />
+            </div>
 
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-4">
-              <label className="text-sm font-bold uppercase tracking-widest text-neutral-500">Prompts Input</label>
+            <div className="mb-4">
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-bold uppercase tracking-widest text-neutral-500">Prompts</label>
+                <button 
+                  onClick={() => {/* Mock file upload */}}
+                  className="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1.5"
+                >
+                  <Plus className="w-3 h-3" />
+                  Upload .txt
+                </button>
+              </div>
+              <textarea 
+                rows={5}
+                placeholder="Separate with a blank line..."
+                value={prompts}
+                onChange={(e) => setPrompts(e.target.value)}
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-600/50 transition-all text-sm resize-none font-mono"
+              />
+            </div>
+
+            <div className="flex items-center gap-3">
               <button 
-                onClick={() => {/* Mock file upload */}}
-                className="text-sm text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-2"
+                onClick={handleAddTasks}
+                className="flex-1 bg-white hover:bg-neutral-200 text-neutral-950 font-black py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 disabled:opacity-50 text-sm"
+                disabled={!prompts.trim()}
               >
-                <Plus className="w-4 h-4" />
-                Upload .txt
+                <Plus className="w-4 h-4 stroke-[3]" />
+                Add to Queue
               </button>
             </div>
-            <textarea 
-              rows={10}
-              placeholder="Enter prompts, separate each with a blank line..."
-              value={prompts}
-              onChange={(e) => setPrompts(e.target.value)}
-              className="w-full bg-neutral-950 border border-neutral-800 rounded-2xl px-6 py-6 focus:outline-none focus:ring-2 focus:ring-indigo-600/50 transition-all text-base resize-none font-mono"
-            />
           </div>
 
-          {mode === GenerationMode.IMAGE_TO_VIDEO && (
-             <div className="mb-8 p-8 border-2 border-dashed border-neutral-800 rounded-2xl flex flex-col items-center justify-center gap-3 hover:border-neutral-700 transition-colors cursor-pointer group">
-                <Plus className="w-8 h-8 text-neutral-500 group-hover:text-indigo-400 transition-colors" />
-                <span className="text-sm font-bold text-neutral-400 group-hover:text-neutral-200">Drag & drop reference images</span>
-             </div>
-          )}
-
-          <div className="flex items-center gap-5">
-            <button 
-              onClick={handleAddTasks}
-              className="flex-1 bg-white hover:bg-neutral-200 text-neutral-950 font-black py-5 rounded-2xl transition-all shadow-xl shadow-white/5 flex items-center justify-center gap-3 disabled:opacity-50 text-base"
-              disabled={!prompts.trim()}
-            >
-              <Plus className="w-6 h-6 stroke-[3]" />
-              Add Tasks to Queue
-            </button>
-            <button className="p-5 border border-neutral-800 rounded-2xl hover:bg-neutral-800 transition-all text-neutral-400 hover:text-white">
-              <Info className="w-6 h-6" />
-            </button>
+          {/* Quick Stats */}
+          <div className="grid grid-cols-2 gap-4">
+            <StatCard title="Prompts" value={prompts.split('\n\n').filter(p => p.trim()).length.toString()} icon={<Zap className="text-yellow-500 w-4 h-4" />} />
+            <StatCard title="Queue" value={queueCount.toString()} icon={<List className="text-blue-500 w-4 h-4" />} />
           </div>
         </div>
-      </div>
-
-      {/* Quick Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <StatCard title="Prompts Ready" value={prompts.split('\n\n').filter(p => p.trim()).length.toString()} icon={<Zap className="text-yellow-500" />} />
-        <StatCard title="Tasks in Queue" value={queueCount.toString()} icon={<List className="text-blue-500" />} />
-        <StatCard title="Active Automation" value="Standby" icon={<Play className="text-green-500" />} />
       </div>
     </motion.div>
   );
@@ -472,12 +463,12 @@ function ModeButton({ active, label, icon, onClick }: { active: boolean, label: 
 
 function StatCard({ title, value, icon }: { title: string, value: string, icon: React.ReactNode }) {
   return (
-    <div className="bg-neutral-900/50 border border-neutral-800 p-8 rounded-3xl">
-      <div className="flex items-center justify-between mb-6">
-        <span className="text-xs font-black uppercase tracking-[0.2em] text-neutral-500">{title}</span>
+    <div className="bg-neutral-800/30 border border-neutral-800/60 p-4 rounded-2xl">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-500">{title}</span>
         {icon}
       </div>
-      <div className="text-4xl font-black text-white">{value}</div>
+      <div className="text-2xl font-black text-white">{value}</div>
     </div>
   );
 }

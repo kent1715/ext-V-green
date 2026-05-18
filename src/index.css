@@ -7,6 +7,11 @@
 }
 
 @layer base {
+  html, body {
+    width: 800px;
+    height: 600px;
+    overflow: hidden;
+  }
   body {
     @apply bg-neutral-950 text-neutral-100 font-sans antialiased;
     margin: 0;
