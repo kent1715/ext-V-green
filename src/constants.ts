@@ -2,16 +2,19 @@ import { GenerationMode, type ExtensionSettings } from './types';
 
 export const DEFAULT_SETTINGS: ExtensionSettings = {
   defaultMode: GenerationMode.TEXT_TO_VIDEO,
-  defaultAspectRatio: '16:9',
-  outputsPerPrompt: 1,
-  concurrentPrompts: 3,
-  promptDelay: 30,
+  defaultAspectRatio: '16:9 (YouTube)',
+  outputsPerPrompt: 2,
+  concurrentPrompts: 1,
+  delayMin: 20,
+  delayMax: 30,
   videoModel: 'Veo 3.1 Fast',
-  imageModel: 'Imagen 3',
-  autoDownloadVideo: '1080p',
-  autoDownloadImage: '4k',
+  imageModel: 'Nano Banana 2',
+  autoDownloadVideo: '720p',
+  autoDownloadImage: '1k',
   maxRetries: 5,
   language: 'en',
+  autoVoice: false,
+  autoRename: true,
 };
 
 export const SELECTORS = {
