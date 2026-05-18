@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { 
   Plus, 
   Settings as SettingsIcon, 
@@ -143,6 +143,18 @@ function ControlTab({ settings, onSettingsChange, onAdd, queueLength }: any) {
   const [mode, setMode] = useState<GenerationMode>(GenerationMode.TEXT_TO_VIDEO);
   const [prompts, setPrompts] = useState("");
   const [folderName, setFolderName] = useState("veo-folder-1");
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSelectedImages(Array.from(e.target.files));
+    }
+  };
+
+  const triggerUpload = () => {
+    fileInputRef.current?.click();
+  };
 
   const handleAddTasks = () => {
     const list = prompts.split('\n\n').filter(p => p.trim());
@@ -158,6 +170,7 @@ function ControlTab({ settings, onSettingsChange, onAdd, queueLength }: any) {
       config: { ...settings, projectName: folderName }
     })));
     setPrompts("");
+    setSelectedImages([]);
   };
 
   return (
@@ -196,11 +209,30 @@ function ControlTab({ settings, onSettingsChange, onAdd, queueLength }: any) {
       {/* Image to Image Specific UI */}
       {mode === GenerationMode.IMAGE_TO_IMAGE && (
         <div className="space-y-4">
-          <div className="border border-dashed border-neutral-800 rounded-xl p-8 flex flex-col items-center justify-center gap-3 bg-neutral-900/10 cursor-pointer hover:bg-neutral-900/20 transition-all">
-            <CloudUpload className="w-8 h-8 text-neutral-400" />
+          <input 
+            type="file" 
+            ref={fileInputRef} 
+            className="hidden" 
+            multiple 
+            accept="image/*" 
+            onChange={handleImageUpload} 
+          />
+          <div 
+            onClick={triggerUpload}
+            className="border border-dashed border-neutral-800 rounded-xl p-8 flex flex-col items-center justify-center gap-3 bg-neutral-900/10 cursor-pointer hover:bg-neutral-900/20 transition-all"
+          >
+            <CloudUpload className={cn("w-8 h-8", selectedImages.length > 0 ? "text-emerald-500" : "text-neutral-400")} />
             <div className="flex flex-col items-center">
-              <span className="text-sm font-bold">Click to upload or drag & drop</span>
-              <span className="text-[11px] text-neutral-500">PNG, JPG, GIF up to 10MB each</span>
+              <span className="text-sm font-bold">
+                {selectedImages.length > 0 
+                  ? `${selectedImages.length} images selected` 
+                  : "Click to upload or drag & drop"}
+              </span>
+              <span className="text-[11px] text-neutral-500">
+                {selectedImages.length > 0 
+                  ? selectedImages.map(f => f.name).join(", ").substring(0, 50) + "..."
+                  : "PNG, JPG, GIF up to 10MB each"}
+              </span>
             </div>
           </div>
 
