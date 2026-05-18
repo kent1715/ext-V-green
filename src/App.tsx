@@ -21,7 +21,9 @@ import {
   ChevronDown,
   Repeat,
   Search,
-  Settings2
+  Settings2,
+  CloudUpload,
+  Star
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from './lib/utils';
@@ -165,7 +167,7 @@ function ControlTab({ settings, onSettingsChange, onAdd, queueLength }: any) {
         <ModeBtn active={mode === GenerationMode.TEXT_TO_VIDEO} onClick={() => setMode(GenerationMode.TEXT_TO_VIDEO)} icon={<FileText className="w-4 h-4" />} label="Text to Video" />
         <ModeBtn active={mode === GenerationMode.IMAGE_TO_VIDEO} onClick={() => setMode(GenerationMode.IMAGE_TO_VIDEO)} icon={<ImageIcon className="w-4 h-4" />} label="Frame to Video" />
         <ModeBtn active={mode === GenerationMode.COMPONENTS_TO_VIDEO} onClick={() => setMode(GenerationMode.COMPONENTS_TO_VIDEO)} icon={<Layers className="w-4 h-4" />} label="Ingredients to Video" />
-        <ModeBtn active={mode === GenerationMode.TEXT_TO_IMAGE} onClick={() => setMode(GenerationMode.TEXT_TO_IMAGE)} icon={<Zap className="w-4 h-4" />} label="Text to Image" />
+        <ModeBtn active={mode === GenerationMode.TEXT_TO_IMAGE} onClick={() => setMode(GenerationMode.TEXT_TO_IMAGE)} icon={<Star className="w-4 h-4" />} label="Text to Image" />
         <ModeBtn active={mode === GenerationMode.IMAGE_TO_IMAGE} onClick={() => setMode(GenerationMode.IMAGE_TO_IMAGE)} icon={<ImageIcon className="w-4 h-4" />} label="Image to Image" />
       </div>
 
@@ -190,6 +192,31 @@ function ControlTab({ settings, onSettingsChange, onAdd, queueLength }: any) {
           </div>
         </FormSection>
       </div>
+
+      {/* Image to Image Specific UI */}
+      {mode === GenerationMode.IMAGE_TO_IMAGE && (
+        <div className="space-y-4">
+          <div className="border border-dashed border-neutral-800 rounded-xl p-8 flex flex-col items-center justify-center gap-3 bg-neutral-900/10 cursor-pointer hover:bg-neutral-900/20 transition-all">
+            <CloudUpload className="w-8 h-8 text-neutral-400" />
+            <div className="flex flex-col items-center">
+              <span className="text-sm font-bold">Click to upload or drag & drop</span>
+              <span className="text-[11px] text-neutral-500">PNG, JPG, GIF up to 10MB each</span>
+            </div>
+          </div>
+
+          <FormSection icon={<ImageIcon className="w-4 h-4" />} title="Max Input Images per Prompt" description="Maximum images allowed per prompt.">
+            <div className="relative">
+              <select className="w-full bg-neutral-900 border border-neutral-800 px-3 py-2.5 rounded-lg text-sm appearance-none outline-none focus:border-neutral-700">
+                <option>3 images</option>
+                <option>1 image</option>
+                <option>2 images</option>
+                <option>5 images</option>
+              </select>
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500 pointer-events-none" />
+            </div>
+          </FormSection>
+        </div>
+      )}
 
       {/* Prompts Section */}
       <div className="bg-neutral-900/20 border border-neutral-800 rounded-xl p-4">
