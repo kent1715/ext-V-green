@@ -8,7 +8,7 @@
 
 @layer base {
   html, body {
-    width: 680px;
+    width: 650px;
     height: 600px;
     overflow-y: auto;
     overflow-x: hidden;

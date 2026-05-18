@@ -54,28 +54,49 @@ export default function App() {
     chromeAPI.storage.local.set({ queue: updatedQueue });
   };
 
+  const toggleProcessing = () => {
+    const nextState = !isProcessing;
+    setIsProcessing(nextState);
+    chromeAPI.runtime.sendMessage({ type: nextState ? 'START_QUEUE' : 'STOP_QUEUE' });
+  };
+
   return (
-    <div className="flex flex-col w-[650px] min-h-[600px] bg-black text-neutral-200">
+    <div className="flex flex-col w-[650px] min-h-[600px] bg-black text-neutral-200 overflow-hidden">
       {/* Top Navbar */}
-      <nav className="border-b border-neutral-800 px-6 py-1 flex items-center gap-6 bg-neutral-900/20 sticky top-0 z-50">
-        <TabItem 
-          active={activeTab === 'control'} 
-          onClick={() => setActiveTab('control')} 
-          icon={<Settings2 className="w-5 h-5" />} 
-          label="Control" 
-        />
-        <TabItem 
-          active={activeTab === 'settings'} 
-          onClick={() => setActiveTab('settings')} 
-          icon={<SettingsIcon className="w-5 h-5" />} 
-          label="Setting" 
-        />
-        <TabItem 
-          active={activeTab === 'debug'} 
-          onClick={() => setActiveTab('debug')} 
-          icon={<Search className="w-5 h-5" />} 
-          label="Debug Logs" 
-        />
+      <nav className="border-b border-neutral-800 px-6 py-1 flex items-center justify-between bg-neutral-900/20 sticky top-0 z-50">
+        <div className="flex items-center gap-6">
+          <TabItem 
+            active={activeTab === 'control'} 
+            onClick={() => setActiveTab('control')} 
+            icon={<Settings2 className="w-5 h-5" />} 
+            label="Control" 
+          />
+          <TabItem 
+            active={activeTab === 'settings'} 
+            onClick={() => setActiveTab('settings')} 
+            icon={<SettingsIcon className="w-5 h-5" />} 
+            label="Setting" 
+          />
+          <TabItem 
+            active={activeTab === 'debug'} 
+            onClick={() => setActiveTab('debug')} 
+            icon={<Search className="w-5 h-5" />} 
+            label="Debug Logs" 
+          />
+        </div>
+
+        <button 
+          onClick={toggleProcessing}
+          className={cn(
+            "flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold transition-all",
+            isProcessing 
+              ? "bg-red-500/10 text-red-500 border border-red-500/20" 
+              : "bg-emerald-500 text-black shadow-lg shadow-emerald-500/20"
+          )}
+        >
+          {isProcessing ? <StopCircle className="w-4 h-4" /> : <Play className="w-4 h-4" />}
+          {isProcessing ? "STOP PROCESS" : "RUN PROCESS"}
+        </button>
       </nav>
 
       {/* Main Area */}
