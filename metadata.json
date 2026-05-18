@@ -1,0 +1,10 @@
+{
+  "name": "VEO Automation",
+  "description": "Powerful Chrome extension for batch video and image generation on Google Flow AI (VEO3). Automates queueing, processing, and multi-mode downloads.",
+  "requestFramePermissions": [
+    "download"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

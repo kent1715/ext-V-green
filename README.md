@@ -1,11 +1,23 @@
-<div align="center">
+# VEO Automation - Chrome Extension
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+This project contains the source code for the VEO Automation Chrome extension.
 
-  <h1>Built with AI Studio</h2>
+## How to use as a Chrome Extension
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+1.  Click **Export** or download the project files.
+2.  Run `npm install` and `npm run build`.
+3.  Open Google Chrome and go to `chrome://extensions/`.
+4.  Enable **Developer mode** in the top right.
+5.  Click **Load unpacked** and select the `dist` folder of this project.
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## Development
 
-</div>
+The preview in AI Studio shows the **Extension Dashboard (Popup UI)**.
+The actual automation logic is contained in `src/extension/contentScript.ts`.
+
+## Features
+- Queue support for batch processing
+- Text-to-Video, Image-to-Video, Components-to-Video
+- Text-to-Image, Image-to-Image
+- Auto-download with project organization
+- Custom retry mechanisms
